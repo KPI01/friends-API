@@ -1,0 +1,20 @@
+{
+  "name": "friend_list_app",
+  "version": "1.0.0",
+  "description": "Friend list app - practice project",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "KPI01",
+  "license": "ISC",
+  "dependencies": {
+    "encryptjs": "^2.0.0",
+    "express": "latest",
+    "express-session": "latest",
+    "jsonwebtoken": "latest"
+  },
+  "devDependencies": {
+    "nodemon": "X.X.X"
+  }
+}
