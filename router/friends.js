@@ -20,18 +20,18 @@ let friends = {
   },
 };
 
-// GET request: Obtener todos los amigos
+// GET request: shows all friends
 router.get('/', function (req, res) {
   res.send(JSON.stringify(friends));
 });
 
-// GET request: Obtener amigos por ID
+// GET request: show friend by ID
 router.get('/:email', function (req, res) {
   const email = req.params.email;
   res.send(JSON.stringify(friends[email]));
 });
 
-// POST request: Agregar nuevo amigo
+// POST request: add new friend
 router.post('/', function (req, res) {
   const email = req.body.email;
   const firstName = req.body.firstName
@@ -55,7 +55,7 @@ router.post('/', function (req, res) {
   }
 });
 
-// PUT request: Actualizar datos de un amigo buscando por ID
+// PUT request: update friend by ID
 router.put('/:email', function (req, res) {
   const email = req.params.email;
   let changes = {
@@ -88,7 +88,7 @@ router.put('/:email', function (req, res) {
   }
 });
 
-// DELETE request: Eliminar a un amigo buscando por ID
+// DELETE request: deletes user by ID
 router.delete('/:email', function (req, res) {
     const email = req.params.email
     
@@ -100,5 +100,5 @@ router.delete('/:email', function (req, res) {
     }
 });
 
-// Exportación del router
+// Export router
 module.exports = router;

@@ -39,13 +39,13 @@ function validateUser(email, password) {
       if (passDecrypted === password) {
         return { isValid: true };
       } else {
-        return { isValid: false, reason: "Datos inválidos" };
+        return { isValid: false, reason: "Invalid data" };
       }
     } else {
       return {
         isValid: false,
         reason:
-          "No es posible recuperar clave de usuario, es posible que no exista",
+          "Is not possible to read user's password, possibly user doesn't exist",
       };
     }
   } else {
@@ -54,19 +54,19 @@ function validateUser(email, password) {
     if (!password) missingData.push('clave')
     return {
       isValid: false,
-      reason: `No se han encontrado los siguientes datos: ${missingData.join(', ')}`
+      reason: `Missing data: ${missingData.join(', ')}`
     }
   }
 }
 
-// Datos de la sesión
+// Session data
 const SECRET = crypto.randomBytes(32);
 const ALGORITHM = "aes-256-cbc";
 const IV = crypto.randomBytes(16);
 
-// Funciones que crean CIPHER y DECIPHER
+// Functions encrypt and decrypt
 /**
- * Función para encriptar textos
+ * 
  * @param {string} text
  * @returns {string}
  */
@@ -76,7 +76,7 @@ function encrypt(text) {
   return encrypt;
 }
 /**
- * Función para descifrar textos
+ * 
  * @param {string} textEncrypted
  * @returns {string}
  */
@@ -96,12 +96,12 @@ app.use(
 );
 app.use(express.json());
 
-// GET request: bienvenida a la API
+// GET request: welcome to API
 app.get("/", function (req, res) {
-  return res.json({ message: "Bienvenido a la app de amigos!" });
+  return res.json({ message: "Welcome to friends app!" });
 });
 
-// POST request: registro
+// POST request: register user
 app.post("/register", function (req, res) {
   const name = req.body.name;
   const email = req.body.email;
@@ -109,14 +109,14 @@ app.post("/register", function (req, res) {
 
   if (name && email && pass) {
     if (doesExist(name)) {
-      return res.json({ message: "El usuario ya existe!" });
+      return res.json({ message: "User already exists!" });
     } else {
       users[email] = {
         name: name,
         password: encrypt(pass),
       };
       return res.json({
-        message: "Se ha agregado al usuario adecuadamente!",
+        message: "User has been added successfully",
         userAdded: users[email],
       });
     }
@@ -126,57 +126,65 @@ app.post("/register", function (req, res) {
     if (!email) missingData.push("email");
     if (!pass) missingData.push("clave");
     return res.json({
-      message: `No se han encontrado los siguientes datos: ${missingData.join(
+      message: `Missing data: ${missingData.join(
         ", "
       )}`,
     });
   }
 });
 
-// POST request: mostrar usuarios
+// POST request: user login
 app.post("/login", function (req, res) {
   const email = req.body.email;
   const pass = req.body.password;
   const validationObject = validateUser(email, pass);
 
   if (validationObject.isValid) {
+    // Creating access token
     let accTkn = jwt.sign({
       data: pass},
       SECRET, {expiresIn: '1h'}
     )
+    // Saves access token in authorization object from session
     req.session.authorization = {
       accTkn,email
     }
     return res.json({
-      message: `Hola ${users[email].name}, has iniciado sesión exitosamente!`,
+      message: `Hello ${users[email].name}, you have logged in successfully!`,
     });
   } else {
     return res.json({
-      message: `Error al iniciar sesión: ${validationObject.reason}`,
+      message: `Error: ${validationObject.reason}`,
     });
   }
 });
 
-// Función para autorizar a usuario
+// Authorize user
 app.use('/friends', function (req,res,next){
   if (req.session.authorization) {
+    // Access token in authorization object from session
     let tkn = req.session.authorization['accTkn']
+    // Verify token
     jwt.verify(tkn,SECRET,function (err,user){
       if(err) {
-        return res.json({message:'No has sido autenticado'})
+        return res.json({message:'User not authenticated'})
       } else {
         req.user = user
-        next()
+        next() // Access to friends route
       }
     })
   } else {
-    return res.json({message:'No has iniciado sesión'})
+    return res.json({message:'User not logged in'})
   }
 })
 
+/*
+Accessed only when user is authenticated 
+User routes in friends.js
+*/
 app.use('/friends',routes)
 
-// Levantar servidor
+// Server
 const PROTOCOL = "http";
 const DOMAIN = "localhost";
 const PORT = 3000;
