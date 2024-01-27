@@ -4,7 +4,7 @@
 
 ```json
 {
-    "name":"Jorge",
+    "name":"Pepe",
     "email":"email@dominio.com",
     "password":"password"
 }
@@ -15,8 +15,8 @@
 ```json
 {
     "email":"email@dominio.com",
-    "firstName":"Jorge",
-    "lastName":"Ramirez",
+    "firstName":"Paco",
+    "lastName":"Fernandez",
     "DOB":"11-12-2001"
 }
 ```

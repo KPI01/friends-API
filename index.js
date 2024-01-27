@@ -186,11 +186,11 @@ app.use('/friends',routes)
 
 export default app
 
-// // Server
-// const PROTOCOL = "http";
-// const DOMAIN = "localhost";
-// const PORT = 3000;
+// Server
+const PROTOCOL = "http";
+const DOMAIN = "localhost";
+const PORT = process.env.PORT || 3000;
 
-// app.listen(PORT, function () {
-//   console.log(`Servidor escuchando en: ${PROTOCOL}://${DOMAIN}:${PORT}`);
-// });
+app.listen(PORT, function () {
+  console.log(`Servidor escuchando en: ${PROTOCOL}://${DOMAIN}:${PORT}`);
+});
