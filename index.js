@@ -184,11 +184,13 @@ User routes in friends.js
 */
 app.use('/friends',routes)
 
-// Server
-const PROTOCOL = "http";
-const DOMAIN = "localhost";
-const PORT = 3000;
+export default app
 
-app.listen(PORT, function () {
-  console.log(`Servidor escuchando en: ${PROTOCOL}://${DOMAIN}:${PORT}`);
-});
+// // Server
+// const PROTOCOL = "http";
+// const DOMAIN = "localhost";
+// const PORT = 3000;
+
+// app.listen(PORT, function () {
+//   console.log(`Servidor escuchando en: ${PROTOCOL}://${DOMAIN}:${PORT}`);
+// });
